@@ -1,19 +1,22 @@
 from sqlalchemy.exc import SQLAlchemyError
-from database_utils import DatabaseConnector as db_connector
+from database_utils import DatabaseConnector as db_con
 import boto3
 import pandas as pd 
 import sqlalchemy as db
 import tabula as tb
 import requests
-import json
 import numpy as np
 from io import BytesIO
+import json
 
 
 
-class DataExtractor:
-    def __init__(self, db_connector):
-        self.db_connector = db_connector
+class DataExtractor():
+    def __init__(self):
+        pass
+        return 
+        # self.db_connector = db_connector
+        
 
     def read_data(self, connec):
         inspector = db.inspect(connec)
@@ -21,29 +24,31 @@ class DataExtractor:
         print(tables)
         return tables
     
-    def read_rds_table(self, db_connector, table_name):
+    def read_rds_table(self, db_con, table_name):
         print("running the read_rds_table")
-        engine = db_connector.init_db_engine()
-        query = (f"SELECT * FROM  {table_name}")
-        data = pd.read_sql_table(query, engine)
+        # engine = db_con.init_db_engine()
+        # query = (f"SELECT * FROM  {table_name}")
+        data = pd.read_sql_table(table_name, db_con)
         df = pd.DataFrame(data)
         print("done")
         return df 
     
     def retrieve_pdf_data(self):
         print("retrieving all the data...")
-        link = "https://data-handling-project-readonly.cq2e8zno855e.eu-west-1.rds.amazonaws.com"
-        card_details = pd.concat(tb.read_pdf(link, pages = 'all'), ignore_index = True)
+        link = "https://data-handling-public.s3.eu-west-1.amazonaws.com/card_details.pdf"
+        card_details = tb.read_pdf(link, pages='all')
+        card_details = pd.concat(card_details)
         print("done")
         return (card_details)
 
     def list_number_of_stores(self, my_endpoint, api_key):
         print("running list_number_of_stores")
         response = requests.get(my_endpoint, headers = api_key).content
-        result = json.loads(response)
-        result = result['number_of_stores']
+        data = json.loads(response)
+        number_of_stores = data['number_stores']
+        # result = result['number_stores']
         print("done")
-        result(result)
+        return number_of_stores
 
     def retrieve_stores_data(self, endpoint, num_stores, api_key):
         print("running retreive_stores_data")
