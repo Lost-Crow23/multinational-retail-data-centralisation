@@ -1,16 +1,15 @@
 
 -- Task 1 : Changing into the Correct data types to orders table 
 
+-- Maximum card_number length
 SELECT MAX(LENGTH(card_number::TEXT)) FROM orders_table
 	SET LIMIT 1; --19
 
 -- Maximum store_code length
-
 SELECT MAX(LENGTH(store_code::TEXT)) FROM orders_table
 	SET LIMIT 1; --12
 
 --  Maximum product_code length
-
 SELECT MAX(LENGTH(product_code::TEXT)) FROM orders_table
 	SET LIMIT 1; --11
 

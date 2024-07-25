@@ -91,7 +91,7 @@ class DataCleaning():
     def _drop_rows_with_null_values(self, df):
         df = df.replace("NULL", np.NaN)
         df = df.dropna(subset = ['user_uuid'], how='any', axis=0)
-        df = df.drop_duplicates(subset = ['phone_number', 'email_address'])# fix this
+        df = df.drop_duplicates(subset = ['phone_number', 'email_address'])
         return df
     
     def _first_name_last_name_values(self, df):
@@ -101,7 +101,7 @@ class DataCleaning():
     
     def _format_date_time_values(self, df):
         df['join_date'] = df['join_date'].apply(pd.to_datetime, errors = 'coerce')
-        df.dropna(subset = ['join_date'], inplace = True) # comment
+        df.dropna(subset = ['join_date'], inplace = True) 
         return df
 
     def _correct_company_values(self, df):
@@ -230,7 +230,7 @@ class DataCleaning():
 
     # Private methods for products weights
     def _convert_product_weights(self, weight):
-        weight = weight.rstrip(". ") # Removes . and any trailing white spaces
+        weight = weight.rstrip(". ") 
         def convert(weight):
             weight_in_kg = weight    
             if "kg" in weight:
@@ -328,6 +328,7 @@ class DataCleaning():
         df = df.loc[df['card_number'].str.len() <= 19]
         return df 
 
+# 6. Public methods for order date
     def _clean_order_date(self, date_details):
         clean_order_date = date_details.copy()
         print("running clean_order_date")
