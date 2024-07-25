@@ -80,39 +80,39 @@ New database sales_data created using PgAdmin 4:
 
 ##### Create Project Utils
 
-    1. Create Data Extraction class. `data_extraction.py`, this will store the methods responsible for retrieving data from different
-        sources into pandas DataFrame.
-    2. Create Data Cleaning class. In `data_cleaning.py`, we develop the class DataCleaning that cleans different tables, which is
-        retrieved from the 'data_extraction.py`.
-    3. Create and write a DatabaseConnector for the uploading of the data. In `database_utils.py`, which initiates the database
-        engine based on credentials provided in the 'yaml` file.
-    4. Create `db_creds` yaml file to store the credentials for both external and `db_creds_local` for the local.
-        **FYI**
-    5. Can also create an `.env` file to store all the sensitive data, making them secure and protected (Making sure it;s within
-        the `gitignore` file.)
-    6. Create a Database Schema which performs the wrangling for the data `star_schema.sql`. Where all the columns are converted
-        into its correct data types, as dim tables are given a primary key, and where also foreign keys are added into the order
-        table.
-    7. Create a Data querying database using SQL which queries are performed within the `scenario_queries.sql` file.
+1. Create Data Extraction class. `data_extraction.py`, this will store the methods responsible for retrieving data from different
+    sources into pandas DataFrame.
+2. Create Data Cleaning class. In `data_cleaning.py`, we develop the class DataCleaning that cleans different tables, which is
+    retrieved from the 'data_extraction.py`.
+3. Create and write a DatabaseConnector for the uploading of the data. In `database_utils.py`, which initiates the database
+    engine based on credentials provided in the 'yaml` file.
+4. Create `db_creds` yaml file to store the credentials for both external and `db_creds_local` for the local.
+    **FYI**
+5. Can also create an `.env` file to store all the sensitive data, making them secure and protected (Making sure it;s within
+    the `gitignore` file.)
+6. Create a Database Schema which performs the wrangling for the data `star_schema.sql`. Where all the columns are converted
+    into its correct data types, as dim tables are given a primary key, and where also foreign keys are added into the order
+    table.
+7. Create a Data querying database using SQL which queries are performed within the `scenario_queries.sql` file.
 
 #### Step 3
 
-    1. Loading all the credentials using the `load_dotenv` and adding within the DatabaseConnector that reads the `.env` file.
+1. Loading all the credentials using the `load_dotenv` and adding within the DatabaseConnector that reads the `.env` file.
 
-    Picture
+Picture
 
-    2. In the DatabaseConnector, create a method `init_db_engine` which will read the credentials from the `.env` file and
-        initialise and return an SQLAlchemy database engine.
+2. In the DatabaseConnector, create a method `init_db_engine` which will read the credentials from the `.env` file and
+    initialise and return an SQLAlchemy database engine.
 
-    picture
+picture
 
-    3. Using the engine from `init_db_engine`, create a method `list_db_tables` to list all the tables in the database, so that
-        we know which tables you can extract data from.
+3. Using the engine from `init_db_engine`, create a method `list_db_tables` to list all the tables in the database, so that
+    we know which tables you can extract data from.
 
-    picture
+picture
 
-    4. Create a method within the DatabaseConnector class called `upload_to_db`. This method will take in a Pandas DataFrame and
-        table name to upload as a argument.
+4. Create a method within the DatabaseConnector class called `upload_to_db`. This method will take in a Pandas DataFrame and
+    table name to upload as a argument.
 
     picture
 
@@ -120,17 +120,17 @@ New database sales_data created using PgAdmin 4:
 
 ##### Step 1
 
-    i. Import all the dependencies required for the extraction of the user data
-        - Develop a method within the DataExtractor class called `read_rds_table` which will extract the database table to a Pandas
-            DataFrame. An instance will be taken of your DatabaseConnector class and the table name as an argument and return a Pandas DataFrame. Firstly, use the list_db_tables methods to grab the name of the table containing the user data, thus
-            using the `read_rds_table` method to extract the table containing user data and return the Pandas DataFrame.
+i. Import all the dependencies required for the extraction of the user data
+    - Develop a method within the DataExtractor class called `read_rds_table` which will extract the database table to a Pandas
+        DataFrame. An instance will be taken of your DatabaseConnector class and the table name as an argument and return a Pandas DataFrame. Firstly, use the list_db_tables methods to grab the name of the table containing the user data, thus
+        using the `read_rds_table` method to extract the table containing user data and return the Pandas DataFrame.
 
     picture
 
 ##### Step 2
 
-    i. Create a method called `clean_user_data` and perform the desired operations using Pandas, returning the cleaned user data
-        updated DataFrame.
+i. Create a method called `clean_user_data` and perform the desired operations using Pandas, returning the cleaned user data
+    updated DataFrame.
 
     picture
 
@@ -138,16 +138,16 @@ New database sales_data created using PgAdmin 4:
 
 ##### Step 1
 
-    i. Import all the dependencies required for the extraction of the card data (stored in a pdf file in AWS s3 Bucket)
-        - Develop a method within the DataExtractor class called `retrieve_pdf_data`, which takes the link as an argument and returns a Pandas DataFrame. Firstly, using the `tabula-py` Python Package to extract all the pages from the PDF document
-        at the following link provided. Then return a DataFrame of the extracted data.
+i. Import all the dependencies required for the extraction of the card data (stored in a pdf file in AWS s3 Bucket)
+    - Develop a method within the DataExtractor class called `retrieve_pdf_data`, which takes the link as an argument and returns a Pandas DataFrame. Firstly, using the `tabula-py` Python Package to extract all the pages from the PDF document
+    at the following link provided. Then return a DataFrame of the extracted data.
 
     picture
 
 ##### Step 2
 
-    i. Create a method called `clean_card_data` and perform the desired operations using Pandas, returning the cleaned card data
-        updated DataFrame.
+i. Create a method called `clean_card_data` and perform the desired operations using Pandas, returning the cleaned card data
+    updated DataFrame.
 
     picture
 
@@ -155,16 +155,16 @@ New database sales_data created using PgAdmin 4:
 
 ##### Step 1
 
-    i. Import all the dependencies required for the extraction of the stores data (API Get Request and has TWO API Get methods)
-        - Develop a method within the DataExtractor class called `list_number_of_stores` taking in the given endpoint and the api key as arguments and returning the number of stores. The API has two GET methods. One will return the n.o of stores in the business and the other will retrieve the store given a store number. To connect to the API, an API Key must be included to the API in the method header. We have this within the `.env` file. Along with the endpoints.
-        - Develop a method called `retrieve_stores_data` that takes the store_endpoint and api key as an argument and extracts all the stores from the API and saves them into a Pandas DataFrame.
+i. Import all the dependencies required for the extraction of the stores data (API Get Request and has TWO API Get methods)
+    - Develop a method within the DataExtractor class called `list_number_of_stores` taking in the given endpoint and the api key as arguments and returning the number of stores. The API has two GET methods. One will return the n.o of stores in the business and the other will retrieve the store given a store number. To connect to the API, an API Key must be included to the API in the method header. We have this within the `.env` file. Along with the endpoints.
+    - Develop a method called `retrieve_stores_data` that takes the store_endpoint and api key as an argument and extracts all the stores from the API and saves them into a Pandas DataFrame.
 
     picture
 
 ##### Step 2
 
-    i. Create a method called `clean_store_data` and perform the desired operations using Pandas, returning the cleaned store data
-        updated DataFrame.
+i. Create a method called `clean_store_data` and perform the desired operations using Pandas, returning the cleaned store data
+    updated DataFrame.
 
     picture
 
@@ -172,20 +172,20 @@ New database sales_data created using PgAdmin 4:
 
 ##### Step 1
 
-    i. Import all the dependencies required for the extraction of the products data (stored in s3 Bucket in CSV file `boto3` , `bytesIO`, `numpy`)
-        - Develop a method within the DataExtractor class called `extract_from_s3` taking the address(s3) as an argument which uses the `boto3` package. The s3 Bucket is under the `address` given and will return the Pandas DataFrame. You will also need to be logged into the AWS CLI before you proceed to retrieve the data from the bucket.
+i. Import all the dependencies required for the extraction of the products data (stored in s3 Bucket in CSV file `boto3` , `bytesIO`, `numpy`)
+    - Develop a method within the DataExtractor class called `extract_from_s3` taking the address(s3) as an argument which uses the `boto3` package. The s3 Bucket is under the `address` given and will return the Pandas DataFrame. You will also need to be logged into the AWS CLI before you proceed to retrieve the data from the bucket.
 
     picture
 
 ##### Step 2
 
-    i. Create a method called `convert_products_weight` in `DataCleaning` class which will take the weight within the DataFrame as an argument and alter and clean the weight column once it is executed within the `clean_products_data` method. The weight column in the DataFrame, has different units. This method will convert them all to a decimal value representing their weight in `kg`. Using a 1:1 ratio of mil to g as a rough estimation for the rows containing ml.
+i. Create a method called `convert_products_weight` in `DataCleaning` class which will take the weight within the DataFrame as an argument and alter and clean the weight column once it is executed within the `clean_products_data` method. The weight column in the DataFrame, has different units. This method will convert them all to a decimal value representing their weight in `kg`. Using a 1:1 ratio of mil to g as a rough estimation for the rows containing ml.
 
     picture
 
 ##### Step 3
 
-    i. Create a method called `clean_products_data` and perform the desired operations using Pandas, returning the cleaned products data updated DataFrame.
+i. Create a method called `clean_products_data` and perform the desired operations using Pandas, returning the cleaned products data updated DataFrame.
 
     picture
 
@@ -193,16 +193,16 @@ New database sales_data created using PgAdmin 4:
 
 ##### Step 1
 
-    i. Import all the dependencies required for the extraction of the orders data (`datetime`)
-        i. This table which acts as the single source of truth for all the orders the company has made in the past is stored in database on AWS RDS.
-            ii. As developed earlier, using the `list_db_tables` method, get the name of the table containing all the information about the products orders.
-                iii. Extract the ordered data using the `read_rds_table` method, returning the pandas DataFrame.
+i. Import all the dependencies required for the extraction of the orders data (`datetime`)
+    i. This table which acts as the single source of truth for all the orders the company has made in the past is stored in database on AWS RDS.
+        ii. As developed earlier, using the `list_db_tables` method, get the name of the table containing all the information about the products orders.
+            iii. Extract the ordered data using the `read_rds_table` method, returning the pandas DataFrame.
 
 ##### Step 2
 
-    i. Create a method called `clean_orders_data` in the `DataCleaning` class and perform the desired operations using Pandas, returning the cleaned orders data updated DataFrame.
-        ii. The orders data contains column headers which are identical in other tables.
-            iii. This table is the center of the `star_schema.sql` database.
+i. Create a method called `clean_orders_data` in the `DataCleaning` class and perform the desired operations using Pandas, returning the cleaned orders data updated DataFrame.
+    ii. The orders data contains column headers which are identical in other tables.
+        iii. This table is the center of the `star_schema.sql` database.
 
     picture
 
@@ -210,29 +210,29 @@ New database sales_data created using PgAdmin 4:
 
 ##### Step 1
 
-    i. Import all the dependencies required for the extraction of the orders data (`datetime`)
-        ii. This is the final source of the data which is incapsulated as a JSON file containing the details of when each sale occured, as well as other related attributes. Currently stored on s3 which can be found on the link provided.
-            iii. The extraction of JSON is within our method within the `DataExtraction` class called `extract_from_s3`.
+i. Import all the dependencies required for the extraction of the orders data (`datetime`)
+    ii. This is the final source of the data which is incapsulated as a JSON file containing the details of when each sale occured, as well as other related attributes. Currently stored on s3 which can be found on the link provided.
+        iii. The extraction of JSON is within our method within the `DataExtraction` class called `extract_from_s3`.
 
     picture
 
 ##### Step 2
 
-    i. Create a method called `clean_order_date` in the `DataCleaning` class and perform the desired operations using Pandas, returning the cleaned orders date data updated DataFrame.
+i. Create a method called `clean_order_date` in the `DataCleaning` class and perform the desired operations using Pandas, returning the cleaned orders date data updated DataFrame.
 
     picture
 
 #### Uploading all the cleaned data to local database
 
-    i. Using the `main.py` file, the connection to the local postgres database using our local credentials.
-        ii. Required functions are called using the `__name__ == `__main__`` .
-            iii. Uploaded each clean data into their perspective table name
-                - Order Table > order_table
-                - Legacy User > dim_user
-                - Card Details > dim_card_details
-                - Store Details > dim_store_details
-                - Product Details > dim_product_details
-                - Order Time Data > dim_date_times
+i. Using the `main.py` file, the connection to the local postgres database using our local credentials.
+    ii. Required functions are called using the `__name__ == `__main__`` .
+        iii. Uploaded each clean data into their perspective table name
+            - Order Table > order_table
+            - Legacy User > dim_user
+            - Card Details > dim_card_details
+            - Store Details > dim_store_details
+            - Product Details > dim_product_details
+            - Order Time Data > dim_date_times
 
     picture 
 
