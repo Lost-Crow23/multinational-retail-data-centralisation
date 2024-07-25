@@ -244,7 +244,7 @@ Creating the database schema, ensuring that the columns are of the correct data 
 
 - Tables were updated to ensure that data were stored in the correct data types. Determine the maximum number of characters for the VARCHAR(?) data type. A query was performed, before the output were to be used in the VARCHAR data type.
 
-- Task 1: Changing into the Correct data types to orders table
+- **Task 1: Changing into the Correct data types to orders table**
 
     -- Maximum card_number length
     SELECT MAX(LENGTH(card_number::TEXT)) FROM orders_table
@@ -272,7 +272,7 @@ Creating the database schema, ensuring that the columns are of the correct data 
     ALTER COLUMN product_code TYPE VARCHAR(11),
     ALTER COLUMN product_quantity TYPE SMALLINT;
 
-- Task 2: Dim User table converted into correct data types.
+- **Task 2: Dim User table converted into correct data types.**
 
     -- Maximum country_code length from dim_user
     SELECT MAX(LENGTH(country_code::TEXT)) FROM dim_user
@@ -292,13 +292,13 @@ Creating the database schema, ensuring that the columns are of the correct data 
         USING user_uuid::uuid,
     ALTER COLUMN join_date TYPE DATE;
 
-- TASK 3: Change the dim store_details table columns into correct data types and merge LAT columns (This was already dropped / renamed in the DataCleaning phase)
+- **TASK 3: Change the dim store_details table columns into correct data types and merge LAT columns (This was already dropped / renamed in the DataCleaning phase)**
 
     -- Maximum country_code length from dim_store_details
     SELECT MAX(LENGTH(country_code::TEXT)) FROM dim_store_details
     SET LIMIT 1;
 
-  -- Update the N/A values into NULL respectively(As shown in thee `star_schema.sql` file)
+    -- Update the N/A values into NULL respectively(As shown in thee `star_schema.sql` file)
 
 ###### Data Type Changes
 
@@ -318,7 +318,7 @@ Creating the database schema, ensuring that the columns are of the correct data 
     ALTER COLUMN latitude TYPE FLOAT
         USING latitude::double precision;
 
-- Task 4: Making changes to dim_products table
+- **Task 4: Making changes to dim_products table**
 
 - Previous alterations is shown in the `star_schema.sql`.
 
@@ -336,7 +336,7 @@ Creating the database schema, ensuring that the columns are of the correct data 
     ELSE NULL
     END;
 
-- Task 5: Correcting data types of changing Dim product table columns
+- **Task 5: Correcting data types of changing Dim product table columns**
 
 - Previous findings has been made prior as shown in `star_schema.sql`.
 
@@ -358,7 +358,7 @@ Creating the database schema, ensuring that the columns are of the correct data 
         WHEN still_available = 'removed' THEN FALSE
     END;
 
-- Task 6: Correcting data types of changing Dim Date Time table columns.
+- **Task 6: Correcting data types of changing Dim Date Time table columns.**
 
 - Previous findings has been solved as shown in `star_schema.sql`.
 
@@ -373,11 +373,11 @@ Creating the database schema, ensuring that the columns are of the correct data 
     ALTER COLUMN date_uuid TYPE UUID
         USING date_uuid::uuid;
 
-- Task 7: Correcting data types of changing Dim Card Details table columns.
+- **Task 7: Correcting data types of changing Dim Card Details table columns.**
 
 - Previous findings has been solved as shown in `star_schema.sql`.
 
-  - Alterting dim_card_details data types
+    - Alterting dim_card_details data types
     ALTER TABLE dim_card_details
     ALTER COLUMN card_number TYPE VARCHAR(19),
     ALTER COLUMN expiry_date TYPE VARCHAR(5),
@@ -388,7 +388,7 @@ Creating the database schema, ensuring that the columns are of the correct data 
 
 Primary keys are implemented as below which will serve the orders_table. We use SQL respectively to update the columns as our primary keys. Making sure our dim tables primary key matches that of the same column in the orders_table.
 
-- Task 8: Create Primary Key in details which are added in the dim tables.
+- **Task 8: Create Primary Key in details which are added in the dim tables.**
 
     ALTER TABLE dim_date_times
     ADD PRIMARY KEY (date_uuid);
@@ -409,7 +409,7 @@ Primary keys are implemented as below which will serve the orders_table. We use 
     SELECT _ FROM orders_table;
     SELECT _ FROM dim_store_details;
 
-- TASK 9: Creating Foriegn Key and finalising database schema
+- **TASK 9: Creating Foriegn Key and finalising database schema**
 
 - Used to find the difference whilst data cleaning to ensure foriegn and primary key matched. 
 **Main** differences is solved in the file `star_schema.sql`.
@@ -420,7 +420,7 @@ Primary keys are implemented as below which will serve the orders_table. We use 
     ON orders_table.user_uuid = dim_user.user_uuid
     WHERE dim_user.user_uuid IS NULL
 
-- Creating the Foreign keys
+- **Creating the Foreign keys**
 
 - Data Cleaning to ensure the foriegn keys matched the primary keys is shown in thee `star_schema.sql` file and 
 joining of the both tables into one column had to be done to get one single source of truth for the data.
@@ -454,14 +454,14 @@ joining of the both tables into one column had to be done to get one single sour
 Querying and extracting the data from the local database to initialise some up-to-date metrics, thus having a data 
 driven decision and a better / clear understanding of the sales data.
 
-- Task 1 : How many stores does the business have and in which countries ?
+- **Task 1 : How many stores does the business have and in which countries ?**
 
     SELECT country_code, COUNT(store_code) as total_no_stores
     FROM dim_store_details
     GROUP BY country_code
     ORDER BY total_no_stores DESC;
 
-- Task 2 : Which locations currently have the most stores ?
+- **Task 2 : Which locations currently have the most stores ?**
 
     SELECT locality, COUNT(store_code) as total_no_stores
     FROM dim_store_details
@@ -469,7 +469,7 @@ driven decision and a better / clear understanding of the sales data.
     ORDER BY total_no_stores DESC
     LIMIT 7;
 
-- Task 3: Which months produced the largest amount of sales ?
+- **Task 3: Which months produced the largest amount of sales ?**
 
     SELECT
     ROUND(SUM(dim_products.product_price \* orders_table.product_quantity)::NUMERIC, 2) as total_sales, dim_date_times.month
@@ -482,7 +482,7 @@ driven decision and a better / clear understanding of the sales data.
     ORDER BY total_sales DESC
     LIMIT 6;
 
-- Task 4: How many sales are coming from online ?
+- **Task 4: How many sales are coming from online ?**
 
     SELECT
     COUNT(dim_products.product_code) as number_of_sales
@@ -499,7 +499,7 @@ driven decision and a better / clear understanding of the sales data.
     GROUP BY location
     ORDER BY number_of_sales ASC;
 
-- Task 5: What percentage of sales come through each type of store ?
+- **Task 5: What percentage of sales come through each type of store ?**
 
     SELECT
     dim_store_details.store_type AS store_type,
@@ -519,7 +519,7 @@ driven decision and a better / clear understanding of the sales data.
     ORDER BY
     "percentage_total(%)" DESC;
 
-- Task 6: Which month in each year produced the highest cost of sales ?
+- **Task 6: Which month in each year produced the highest cost of sales ?**
 
     SELECT
     ROUND(SUM(dim_products.product_price \* orders_table.product_quantity)::NUMERIC, 2) as Total_sales,
@@ -533,7 +533,7 @@ driven decision and a better / clear understanding of the sales data.
     ORDER BY total_sales DESC
     LIMIT 10;
 
-- Task 7: What is our staff headcount ?
+- **Task 7: What is our staff headcount ?**
 
     SELECT
     SUM(staff_numbers) as total_staff_numbers, country_code
@@ -541,7 +541,7 @@ driven decision and a better / clear understanding of the sales data.
     GROUP BY country_code
     ORDER BY total_staff_numbers DESC;
 
-- Task 8: Which German store type is selling the most ?
+- **Task 8: Which German store type is selling the most ?**
 
     SELECT
     ROUND(SUM(dim_products.product_price \* orders_table.product_quantity)::NUMERIC, 2) AS Total_sales,
@@ -556,7 +556,7 @@ driven decision and a better / clear understanding of the sales data.
     GROUP BY dim_store_details.store_type, dim_store_details.country_code
     ORDER BY Total_sales;
 
---Task 9 : How quickly is the company making sales ?
+- **Task 9 : How quickly is the company making sales ?**
 
 This is shown in the `querying_data.sql` file.
 
