@@ -74,7 +74,7 @@ Setting up a new database to store the data.
 
 New database sales_data created using PgAdmin 4:
 
-![alt text](database_sales_data.png)
+![image info](./Multinational_database/database_sales_data.png)
 
 #### Step 2
 
@@ -99,22 +99,22 @@ New database sales_data created using PgAdmin 4:
 
 1. Loading all the credentials using the `load_dotenv` and adding within the DatabaseConnector that reads the `.env` file.
 
-Picture
+![image info](./Multinational_database/Milestone_2_step_3.png)
 
 2. In the DatabaseConnector, create a method `init_db_engine` which will read the credentials from the `.env` file and
     initialise and return an SQLAlchemy database engine.
 
-picture
+![image info](./Multinational_database/Milestone_2_step_4.png)
 
 3. Using the engine from `init_db_engine`, create a method `list_db_tables` to list all the tables in the database, so that
     we know which tables you can extract data from.
 
-picture
+![image info](./Multinational_database/Milestone_2_step_5.png)
 
 4. Create a method within the DatabaseConnector class called `upload_to_db`. This method will take in a Pandas DataFrame and
     table name to upload as a argument.
 
-    picture
+![image info](./Multinational_database/Milestone_2_step_6.png)
 
 #### Extracting and cleaning user data
 
@@ -125,14 +125,14 @@ i. Import all the dependencies required for the extraction of the user data
         DataFrame. An instance will be taken of your DatabaseConnector class and the table name as an argument and return a Pandas DataFrame. Firstly, use the list_db_tables methods to grab the name of the table containing the user data, thus
         using the `read_rds_table` method to extract the table containing user data and return the Pandas DataFrame.
 
-    picture
+![image info](./Multinational_database/Milestone_2_user_data_step_1.png)
 
 ##### Step 2
 
 i. Create a method called `clean_user_data` and perform the desired operations using Pandas, returning the cleaned user data
     updated DataFrame.
 
-    picture
+![image info](./Multinational_database/Milestone_2_user_data_step_2.png)
 
 #### Extracting and cleaning the card data
 
@@ -142,14 +142,14 @@ i. Import all the dependencies required for the extraction of the card data (sto
     - Develop a method within the DataExtractor class called `retrieve_pdf_data`, which takes the link as an argument and returns a Pandas DataFrame. Firstly, using the `tabula-py` Python Package to extract all the pages from the PDF document
     at the following link provided. Then return a DataFrame of the extracted data.
 
-    picture
+![image info](./Multinational_database/Milestone_2_card_data_step_1.png)
 
 ##### Step 2
 
 i. Create a method called `clean_card_data` and perform the desired operations using Pandas, returning the cleaned card data
     updated DataFrame.
 
-    picture
+![image info](./Multinational_database/Milestone_2_card_data_step_2.png)
 
 #### Extracting and cleaning the store data
 
@@ -159,14 +159,14 @@ i. Import all the dependencies required for the extraction of the stores data (A
     - Develop a method within the DataExtractor class called `list_number_of_stores` taking in the given endpoint and the api key as arguments and returning the number of stores. The API has two GET methods. One will return the n.o of stores in the business and the other will retrieve the store given a store number. To connect to the API, an API Key must be included to the API in the method header. We have this within the `.env` file. Along with the endpoints.
     - Develop a method called `retrieve_stores_data` that takes the store_endpoint and api key as an argument and extracts all the stores from the API and saves them into a Pandas DataFrame.
 
-    picture
+![image info](./Multinational_database/Milestone_2_list_store_num_step_1.png)
 
 ##### Step 2
 
 i. Create a method called `clean_store_data` and perform the desired operations using Pandas, returning the cleaned store data
     updated DataFrame.
 
-    picture
+![image info](./Multinational_database/Milestone_2_store_data_step_1.png)
 
 #### Extracting and cleaning the products data
 
@@ -175,19 +175,19 @@ i. Create a method called `clean_store_data` and perform the desired operations 
 i. Import all the dependencies required for the extraction of the products data (stored in s3 Bucket in CSV file `boto3` , `bytesIO`, `numpy`)
     - Develop a method within the DataExtractor class called `extract_from_s3` taking the address(s3) as an argument which uses the `boto3` package. The s3 Bucket is under the `address` given and will return the Pandas DataFrame. You will also need to be logged into the AWS CLI before you proceed to retrieve the data from the bucket.
 
-    picture
+![image info](./Multinational_database/Milestone_2_products_data_step_1.png)
 
 ##### Step 2
 
 i. Create a method called `convert_products_weight` in `DataCleaning` class which will take the weight within the DataFrame as an argument and alter and clean the weight column once it is executed within the `clean_products_data` method. The weight column in the DataFrame, has different units. This method will convert them all to a decimal value representing their weight in `kg`. Using a 1:1 ratio of mil to g as a rough estimation for the rows containing ml.
 
-    picture
+![image info](./Multinational_database/Milestone_2_convert_weight_step_1.png)
 
 ##### Step 3
 
 i. Create a method called `clean_products_data` and perform the desired operations using Pandas, returning the cleaned products data updated DataFrame.
 
-    picture
+![image info](./Multinational_database/Milestone_2_products_data_step_2.png)
 
 #### Extracting and cleaning the orders data
 
@@ -204,7 +204,7 @@ i. Create a method called `clean_orders_data` in the `DataCleaning` class and pe
     ii. The orders data contains column headers which are identical in other tables.
         iii. This table is the center of the `star_schema.sql` database.
 
-    picture
+![image info](./Multinational_database/Milestone_2_orders_data_step_2.png)
 
 #### Extracting and Cleaning the Order Date Data
 
@@ -214,13 +214,13 @@ i. Import all the dependencies required for the extraction of the orders data (`
     ii. This is the final source of the data which is incapsulated as a JSON file containing the details of when each sale occured, as well as other related attributes. Currently stored on s3 which can be found on the link provided.
         iii. The extraction of JSON is within our method within the `DataExtraction` class called `extract_from_s3`.
 
-    picture
+![image info](./Multinational_database/Milestone_2_order_date_step_1.png)
 
 ##### Step 2
 
 i. Create a method called `clean_order_date` in the `DataCleaning` class and perform the desired operations using Pandas, returning the cleaned orders date data updated DataFrame.
 
-    picture
+![image info](./Multinational_database/Milestone_2_orders_date_step_2.png)
 
 #### Uploading all the cleaned data to local database
 
@@ -234,7 +234,7 @@ i. Using the `main.py` file, the connection to the local postgres database using
             - Product Details > dim_product_details
             - Order Time Data > dim_date_times
 
-    picture 
+![image info](./Multinational_database/Milestone_2_upload_table_step_1.png) 
 
 ### Milestone 3
 
