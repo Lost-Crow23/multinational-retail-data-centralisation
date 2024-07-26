@@ -64,8 +64,7 @@ Setting up the environment:
 
 Create the GitHub repo, thus cloned to the local machine.
 
-![alt text](Github_repo_multi.png "Title")
-
+![alt text](./Multinational_database/Github_repo_multi.png)
 
 ### Milestone 2
 
