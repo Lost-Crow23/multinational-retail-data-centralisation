@@ -2,3 +2,8 @@
 __pycache__/
 *.json
 .env
+*.ipynb
+# Multinational_database/
+uncleaned_data/
+
+
