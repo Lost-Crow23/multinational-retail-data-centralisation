@@ -64,7 +64,8 @@ Setting up the environment:
 
 Create the GitHub repo, thus cloned to the local machine.
 
-![alt text](Github_repo_multi.png)
+![alt text](Github_repo_multi.png "Title")
+
 
 ### Milestone 2
 
@@ -272,7 +273,7 @@ Creating the database schema, ensuring that the columns are of the correct data 
     ALTER COLUMN product_code TYPE VARCHAR(11),
     ALTER COLUMN product_quantity TYPE SMALLINT;
 
-- **Task 2: Dim User table converted into correct data types.**
+- **Task 2: Dim User table converted into correct data types**
 ```
     -- Maximum country_code length from dim_user
     SELECT MAX(LENGTH(country_code::TEXT)) FROM dim_user
@@ -358,7 +359,7 @@ Creating the database schema, ensuring that the columns are of the correct data 
         WHEN still_available = 'removed' THEN FALSE
     END;
 
-- **Task 6: Correcting data types of changing Dim Date Time table columns.**
+- **Task 6: Correcting data types of changing Dim Date Time table columns**
 
 - Previous findings has been solved as shown in `star_schema.sql`.
 
@@ -373,7 +374,7 @@ Creating the database schema, ensuring that the columns are of the correct data 
     ALTER COLUMN date_uuid TYPE UUID
         USING date_uuid::uuid;
 
-- **Task 7: Correcting data types of changing Dim Card Details table columns.**
+- **Task 7: Correcting data types of changing Dim Card Details table columns**
 
 - Previous findings has been solved as shown in `star_schema.sql`.
 ```
@@ -388,7 +389,7 @@ Creating the database schema, ensuring that the columns are of the correct data 
 
 Primary keys are implemented as below which will serve the orders_table. We use SQL respectively to update the columns as our primary keys. Making sure our dim tables primary key matches that of the same column in the orders_table.
 
-- **Task 8: Create Primary Key in details which are added in the dim tables.**
+- **Task 8: Create Primary Key in details which are added in the dim tables**
 ```
     ALTER TABLE dim_date_times
     ADD PRIMARY KEY (date_uuid);

@@ -3,4 +3,7 @@ __pycache__/
 *.json
 .env
 *.ipynb
-*.uncleaned_data/
+Multinational_database/
+uncleaned_data/
+
+
