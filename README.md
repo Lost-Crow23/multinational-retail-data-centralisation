@@ -245,7 +245,7 @@ Creating the database schema, ensuring that the columns are of the correct data 
 - Tables were updated to ensure that data were stored in the correct data types. Determine the maximum number of characters for the VARCHAR(?) data type. A query was performed, before the output were to be used in the VARCHAR data type.
 
 - **Task 1: Changing into the Correct data types to orders table**
-
+```
     -- Maximum card_number length
     SELECT MAX(LENGTH(card_number::TEXT)) FROM orders_table
     SET LIMIT 1; --19
@@ -257,7 +257,7 @@ Creating the database schema, ensuring that the columns are of the correct data 
     -- Maximum product_code length
     SELECT MAX(LENGTH(product_code::TEXT)) FROM orders_table
     SET LIMIT 1; --11
-
+```
 ##### Data Type Changes
 
     --Alter column of data types in the orders_table and casting columns
@@ -273,11 +273,11 @@ Creating the database schema, ensuring that the columns are of the correct data 
     ALTER COLUMN product_quantity TYPE SMALLINT;
 
 - **Task 2: Dim User table converted into correct data types.**
-
+```
     -- Maximum country_code length from dim_user
     SELECT MAX(LENGTH(country_code::TEXT)) FROM dim_user
     SET LIMIT 1;
-
+```
 ##### Data Type Changes
 
     --Alter the data types column and casting columns
@@ -293,13 +293,13 @@ Creating the database schema, ensuring that the columns are of the correct data 
     ALTER COLUMN join_date TYPE DATE;
 
 - **TASK 3: Change the dim store_details table columns into correct data types and merge LAT columns (This was already dropped / renamed in the DataCleaning phase)**
-
+```
     -- Maximum country_code length from dim_store_details
     SELECT MAX(LENGTH(country_code::TEXT)) FROM dim_store_details
     SET LIMIT 1;
 
     -- Update the N/A values into NULL respectively(As shown in thee `star_schema.sql` file)
-
+```
 ###### Data Type Changes
 
     -- Altering the column of data types
@@ -325,7 +325,7 @@ Creating the database schema, ensuring that the columns are of the correct data 
 ##### Data Type Changes
 
 - The statement below is to be used to improve readability in dim_product table
-
+```
     -- Categorising weight class based on weight
     UPDATE dim_products
     SET weight_class = CASE
@@ -335,7 +335,7 @@ Creating the database schema, ensuring that the columns are of the correct data 
     WHEN weight >= 140 then 'Truck_Required'
     ELSE NULL
     END;
-
+```
 - **Task 5: Correcting data types of changing Dim product table columns**
 
 - Previous findings has been made prior as shown in `star_schema.sql`.
@@ -376,20 +376,20 @@ Creating the database schema, ensuring that the columns are of the correct data 
 - **Task 7: Correcting data types of changing Dim Card Details table columns.**
 
 - Previous findings has been solved as shown in `star_schema.sql`.
-
+```
     - Alterting dim_card_details data types
     ALTER TABLE dim_card_details
     ALTER COLUMN card_number TYPE VARCHAR(19),
     ALTER COLUMN expiry_date TYPE VARCHAR(5),
     ALTER COLUMN date_payment_confirmed TYPE DATE
     USING date_payment_confirmed::DATE;
-
+```
 #### Primary Keys and Foreign Keys
 
 Primary keys are implemented as below which will serve the orders_table. We use SQL respectively to update the columns as our primary keys. Making sure our dim tables primary key matches that of the same column in the orders_table.
 
 - **Task 8: Create Primary Key in details which are added in the dim tables.**
-
+```
     ALTER TABLE dim_date_times
     ADD PRIMARY KEY (date_uuid);
 
@@ -408,23 +408,23 @@ Primary keys are implemented as below which will serve the orders_table. We use 
     SELECT user_uuid FROM dim_user;
     SELECT _ FROM orders_table;
     SELECT _ FROM dim_store_details;
-
+```
 - **TASK 9: Creating Foriegn Key and finalising database schema**
 
 - Used to find the difference whilst data cleaning to ensure foriegn and primary key matched. 
 **Main** differences is solved in the file `star_schema.sql`.
-
+```
     SELECT distinct(orders_table.user_uuid)
     FROM orders_table
     LEFT JOIN dim_user
     ON orders_table.user_uuid = dim_user.user_uuid
     WHERE dim_user.user_uuid IS NULL
-
+```
 - **Creating the Foreign keys**
 
 - Data Cleaning to ensure the foriegn keys matched the primary keys is shown in thee `star_schema.sql` file and 
 joining of the both tables into one column had to be done to get one single source of truth for the data.
-
+```
     ALTER TABLE orders_table
     ADD FOREIGN KEY (date_uuid)
     REFERENCES dim_date_times(date_uuid);
@@ -446,7 +446,7 @@ joining of the both tables into one column had to be done to get one single sour
     ALTER TABLE orders_table
     ADD FOREIGN KEY (card_number)
     REFERENCES dim_card_details(card_number);
-
+```
 ### Milestone 4
 
 #### SQL Data Queries
@@ -455,22 +455,22 @@ Querying and extracting the data from the local database to initialise some up-t
 driven decision and a better / clear understanding of the sales data.
 
 - **Task 1 : How many stores does the business have and in which countries ?**
-
+```
     SELECT country_code, COUNT(store_code) as total_no_stores
     FROM dim_store_details
     GROUP BY country_code
     ORDER BY total_no_stores DESC;
-
+```
 - **Task 2 : Which locations currently have the most stores ?**
-
+```
     SELECT locality, COUNT(store_code) as total_no_stores
     FROM dim_store_details
     GROUP BY locality
     ORDER BY total_no_stores DESC
     LIMIT 7;
-
+```
 - **Task 3: Which months produced the largest amount of sales ?**
-
+```
     SELECT
     ROUND(SUM(dim_products.product_price \* orders_table.product_quantity)::NUMERIC, 2) as total_sales, dim_date_times.month
     FROM dim_date_times
@@ -481,9 +481,9 @@ driven decision and a better / clear understanding of the sales data.
     GROUP BY dim_date_times.month
     ORDER BY total_sales DESC
     LIMIT 6;
-
+```
 - **Task 4: How many sales are coming from online ?**
-
+```
     SELECT
     COUNT(dim_products.product_code) as number_of_sales
     SUM(orders_table.product_quantity)as product_quantity_count,
@@ -498,9 +498,9 @@ driven decision and a better / clear understanding of the sales data.
     ON dim_store_details.store_code = orders_table.store_code
     GROUP BY location
     ORDER BY number_of_sales ASC;
-
+```
 - **Task 5: What percentage of sales come through each type of store ?**
-
+```
     SELECT
     dim_store_details.store_type AS store_type,
     ROUND(CAST(SUM(dim_products.product_price _ orders_table.product_quantity) AS NUMERIC), 2) Total_sales,
@@ -518,9 +518,9 @@ driven decision and a better / clear understanding of the sales data.
     dim_store_details.store_type
     ORDER BY
     "percentage_total(%)" DESC;
-
+```
 - **Task 6: Which month in each year produced the highest cost of sales ?**
-
+```
     SELECT
     ROUND(SUM(dim_products.product_price \* orders_table.product_quantity)::NUMERIC, 2) as Total_sales,
     dim_date_times.year, dim_date_times.month
@@ -532,17 +532,17 @@ driven decision and a better / clear understanding of the sales data.
     GROUP BY dim_date_times.year, dim_date_times.month
     ORDER BY total_sales DESC
     LIMIT 10;
-
+```
 - **Task 7: What is our staff headcount ?**
-
+```
     SELECT
     SUM(staff_numbers) as total_staff_numbers, country_code
     FROM dim_store_details
     GROUP BY country_code
     ORDER BY total_staff_numbers DESC;
-
+```
 - **Task 8: Which German store type is selling the most ?**
-
+```
     SELECT
     ROUND(SUM(dim_products.product_price \* orders_table.product_quantity)::NUMERIC, 2) AS Total_sales,
     dim_store_details.store_type, dim_store_details.country_code
@@ -555,13 +555,13 @@ driven decision and a better / clear understanding of the sales data.
     Country_code = 'DE'
     GROUP BY dim_store_details.store_type, dim_store_details.country_code
     ORDER BY Total_sales;
-
+```
 - **Task 9 : How quickly is the company making sales ?**
 
 This is shown in the `querying_data.sql` file.
 
 ### File Structure
-
+```
     .
     ├── README.md
     ├── __pycache__
@@ -580,7 +580,7 @@ This is shown in the `querying_data.sql` file.
     ├── star_schema.sql
     └── uncleaned_data
         └── legacy_store_details.ipynb
-
+```
 ### License Information
 
 MIT license in place, only permitted to use, copy, modify, merge publish, distribute, sublicence.
